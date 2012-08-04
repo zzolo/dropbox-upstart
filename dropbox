@@ -16,16 +16,7 @@ stop on runlevel [!2345]
  
 respawn
  
-env HOME=/etc/dropbox
-umask 0027
- 
-pre-start script
-  [ ! -e "$HOME/.dropbox/command_socket" ] || rm $HOME/.dropbox/command_socket
-  [ ! -e "$HOME/.dropbox/iface_socket" ]   || rm $HOME/.dropbox/iface_socket
-  [ ! -e "$HOME/.dropbox/unlink.db" ]      || rm $HOME/.dropbox/unlink.db
-end script
- 
 script
   export LANG=en_US.UTF-8
-  exec su -s /bin/sh -c /usr/local/dropbox/dropbox dropbox
+  exec su zzolo -s /bin/sh -c /home/zzolo/.dropbox-dist/dropboxd
 end script
