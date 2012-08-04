@@ -1,0 +1,31 @@
+##
+# A script to manage the Dropbox daemon.  Tested on Ubuntu
+#
+# Inspiration from http://pastebin.com/e9AFgKRx
+#
+# See the following on how to install Dropbox: 
+# https://www.dropbox.com/install?os=lnx
+#
+# Copy this file to /etc/init/ and make executable.
+##
+description "Dropbox"
+author "zzolo"
+ 
+start on runlevel [2345]
+stop on runlevel [!2345]
+ 
+respawn
+ 
+env HOME=/etc/dropbox
+umask 0027
+ 
+pre-start script
+  [ ! -e "$HOME/.dropbox/command_socket" ] || rm $HOME/.dropbox/command_socket
+  [ ! -e "$HOME/.dropbox/iface_socket" ]   || rm $HOME/.dropbox/iface_socket
+  [ ! -e "$HOME/.dropbox/unlink.db" ]      || rm $HOME/.dropbox/unlink.db
+end script
+ 
+script
+  export LANG=en_US.UTF-8
+  exec su -s /bin/sh -c /usr/local/dropbox/dropbox dropbox
+end script
